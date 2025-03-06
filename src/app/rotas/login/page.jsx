@@ -74,7 +74,7 @@ export default function Login() {
           </button>
         </form>
       <Link 
-        href="/rotas/cadastro"
+        href="/rotas/dashboard"
         className="text-blue-700 hover:underline md-4 block text-center">
           Ir para Cadastro
       </Link>

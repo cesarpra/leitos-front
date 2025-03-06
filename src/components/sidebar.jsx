@@ -1,40 +1,44 @@
-"use client"
-import { useState } from "react";
+"use client";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Grid, Archive, Users, MapPin } from "react-feather";
+import { Grid, Archive, Users, MapPin, LogOut } from "react-feather";
 
 export default function Sidebar() {
-  const [active, setActive] = useState("grid");
+  const pathname = usePathname();
+
+  const menuItems = [
+    { href: "/rotas/dashboard", icon: Grid, key: "grid" },
+    { href: "/rotas/arquivo", icon: Archive, key: "archive" },
+    { href: "/rotas/usuarios", icon: Users, key: "users" },
+    { href: "/rotas/unidades", icon: MapPin, key: "map" },
+  ];
 
   return (
     <div className="flex">
       <nav className="relative flex">
-        <ol className="w-20 h-[907px] bg-white shadow-md shadow-gray-500 flex flex-col items-center py-10 mt-0 pt-1 gap-14">
+        <ol className="w-20 h-[907px] bg-white shadow-md shadow-gray-500 flex flex-col items-center py-10 gap-14 pt-2">
+          {/* Logo */}
           <li>
-            <img src="/logo.png" alt="Logo" className="w-[43px] h-[45px] mx-5 pt-1 mb-5 top-[13px] left-[19]"/>
+            <img src="/logo.png" alt="Logo" className="w-[43px] h-[45px] mx-5 pt-0 mb-5" />
           </li>
-          <li onClick={() => setActive("grid")} className="w-full">
-            {active === "grid" && <div className="absolute left-0 h-8 w-1 bg-[#2e76cb] rounded-r-md"></div>}
-            <Link href="/rotas/dashboard" className="flex justify-center">
-              <Grid size={24} color="#0769db" strokeWidth={1.2} className="mx-7 left-[28px] top-[116px] cursor-pointer"/>
-            </Link>
-          </li>
-          <li onClick={() => setActive("archive")} className="w-full">
-            {active === "archive" && <div className="absolute left-0 h-7 w-1 bg-[#2e76cb] rounded-r-md"></div>}
-            <Link href="/rotas/arquivo" className="flex justify-center">
-              <Archive size={24} color="#0769db" strokeWidth={1.2} className="mx-7 left-[28px] top-[214px] cursor-pointer"/>
-            </Link>
-          </li>
-          <li onClick={() => setActive("users")} className="w-full">
-            {active === "users" && <div className="absolute left-0 h-7 w-1 bg-[#2e76cb] rounded-r-md"></div>}
-            <Link href="/rotas/usuarios" className="flex justify-center">
-              <Users size={24} color="#0769db" strokeWidth={1.2} className="mx-7 left-[28px] top-[312px] cursor-pointer"/>
-            </Link>
-          </li>
-          <li onClick={() => setActive("map")} className="w-full">
-            {active === "map" && <div className="absolute left-0 h-7 w-1 bg-[#2e76cb] rounded-r-md"></div>}
-            <Link href="/rotas/unidades" className="flex justify-center">
-              <MapPin size={24} color="#0769db" strokeWidth={1.2} className="mx-7 left-[28px] top-[410px] cursor-pointer"/>
+
+          {/* Menu */}
+          {menuItems.map(({ href, icon: Icon, key }) => {
+            const isActive = pathname === href; 
+            return (
+              <li key={key} className="w-full">
+                {isActive && <div className="absolute left-0 h-8 w-1 bg-[#2e76cb] rounded-r-md"></div>}
+                <Link href={href} className="flex justify-center">
+                  <Icon size={24} color={isActive ? "#0769db" : "gray"} strokeWidth={1.2} className="cursor-pointer" />
+                </Link>
+              </li>
+            );
+          })}
+
+          {/* Ícone de Logout na parte inferior */}
+          <li className="mt-auto pb-5 w-full">
+            <Link href="/rotas/login" className="flex justify-center">
+              <LogOut size={24} color="red" strokeWidth={1.2} className="cursor-pointer" />
             </Link>
           </li>
         </ol>

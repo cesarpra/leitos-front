@@ -43,10 +43,10 @@ const Dashboard = () => {
   );
 
   return (
-    <div className="h-screen p-6 bg-gray-100">
+    <div className="h-[907px] p-6 bg-gray-100">
       <div className="w-[1223px] rounded-[15px] bg-white px-4 py-4">
         {/* ordenar */}
-        <span className="text-gray-700 font-semibold block mb-2">Ordenar por:</span>
+        <span className="text-gray-700 font-bold text-xs block mb-2">Ordenar por:</span>
         
         <div className="flex items-center gap-4">
           {/* Ícones */}
@@ -86,7 +86,7 @@ const Dashboard = () => {
               <input
                 type="text"
                 placeholder="Pesquisar por nome do paciente"
-                className="border-[1px] border-gray-300 rounded-2xl p-2 pr-10 w-full h-[51px]"
+                className="border-[1px] border-gray-300 text-sm rounded-2xl p-2 pr-10 w-full h-[51px]"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
