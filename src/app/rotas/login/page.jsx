@@ -68,7 +68,7 @@ export default function Login() {
           </div>
 
           <button 
-          onClick={() => router.push("/rotas/lista")}
+          onClick={() => router.push("/rotas/dashboard")}
           type="submit" className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
             Login
           </button>

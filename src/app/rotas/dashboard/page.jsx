@@ -40,19 +40,18 @@ export default function Lista() {
   );
 }*/
 
-const Sidebar = () => {
+import Sidebar from "../../../components/sidebar";
+import Header from "../../../components/header";
+import Dashboard from "../../../components/dashboard";
+
+export default function Home() {
   return (
-    <div className="w-20 h-screen bg-gray-100 flex flex-col items-center py-6">
-      <div className="mb-8">
-        <img src="/logo.png" alt="Logo" className="w-8 h-8" />
+    <div className="flex h-screen">
+      <Sidebar />
+      <div className="flex flex-col flex-1">
+        <Header />
+        <Dashboard />
       </div>
-      <nav className="flex flex-col gap-6">
-        <button className="text-blue-500 hover:text-blue-700">🏠</button>
-        <button className="text-gray-500 hover:text-gray-700">📋</button>
-        <button className="text-gray-500 hover:text-gray-700">📍</button>
-      </nav>
     </div>
   );
-};
-
-export default Sidebar;
+}
