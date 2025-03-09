@@ -40,9 +40,9 @@ export default function Lista() {
   );
 }*/
 
-import Sidebar from "../../../components/sidebar";
-import Header from "../../../components/header";
-import Dashboard from "../../../components/dashboard";
+import Sidebar from "../../../components/Sidebar";
+import Header from "../../../components/Header";
+import Dashboard from "../../../components/Dashboard";
 
 export default function Home() {
   return (

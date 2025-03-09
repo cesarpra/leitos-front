@@ -1,13 +1,17 @@
-import Sidebar from "../../../components/sidebar";
-import Header from "../../../components/header";
+import Sidebar from "../../../components/Sidebar";
+import Header from "../../../components/Header";
+import { Inter } from "next/font/google";
 
-export default function Arquivo() {
+const niramit = Inter({ subsets: ["latin"], weight: "400" });
+
+
+export default function unidades() {
   return (
     <div className="flex h-screen">
       <Sidebar />
       <div className="flex flex-col flex-1">
-        <Header />
-        <p>arquivo</p>
+      <Header title={<span className={`flex items-center ${niramit.className}`}> Arquivos</span>} />
+      <p>unidades</p>
       </div>
     </div>
   );

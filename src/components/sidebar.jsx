@@ -17,12 +17,12 @@ export default function Sidebar() {
     <div className="flex">
       <nav className="relative flex">
         <ol className="w-20 h-[907px] bg-white shadow-md shadow-gray-500 flex flex-col items-center py-10 gap-14 pt-2">
-          {/* Logo */}
+          {/* logo */}
           <li>
             <img src="/logo.png" alt="Logo" className="w-[43px] h-[45px] mx-5 pt-0 mb-5" />
           </li>
 
-          {/* Menu */}
+          {/* menu */}
           {menuItems.map(({ href, icon: Icon, key }) => {
             const isActive = pathname === href; 
             return (
@@ -35,7 +35,6 @@ export default function Sidebar() {
             );
           })}
 
-          {/* Ícone de Logout na parte inferior */}
           <li className="mt-auto pb-5 w-full">
             <Link href="/rotas/login" className="flex justify-center">
               <LogOut size={24} color="red" strokeWidth={1.2} className="cursor-pointer" />
