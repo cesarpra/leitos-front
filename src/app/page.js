@@ -1,15 +1,18 @@
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import Dashboard from "../components/Dashboard";
+import Login from './rotas/login/page.jsx';
 
 export default function Home() {
   return (
-    <div className="flex h-screen">
+    <div>
+      <Login/>
+    </div>
+    /*<div className="flex h-screen">
       <Sidebar />
       <div className="flex flex-col flex-1">
         <Header />
         <Dashboard />
       </div>
-    </div>
+    </div>*/
   );
 }

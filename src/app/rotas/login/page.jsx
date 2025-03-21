@@ -1,40 +1,32 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState, useRef } from "react";
 import api from "@/app/services/api";
-import Link from "next/link";
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter()
+  const router = useRouter();
 
-  const emailRef = useRef()
-  const passwordRef = useRef()
+  const emailRef = useRef();
+  const passwordRef = useRef();
 
   async function handleSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
 
-    try{
-    const {data:token} = await api.post('/login', {
+    try {
+      const { data: token } = await api.post("/login", {
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+      });
 
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-
-    })
-
-    localStorage.setItem('token', token)
-     
-    
-
-  }catch(err){
-    alert('Senha ou Email incorreto')
+      localStorage.setItem("token", token);
+      router.push("/rotas/dashboard");
+    } catch (err) {
+      alert("Erro ao fazer login. Verifique seu email e senha.");
+    }
   }
-    console.log(emailRef.current.value)
-    console.log(passwordRef.current.value)
-
-  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
@@ -67,17 +59,10 @@ export default function Login() {
             />
           </div>
 
-          <button 
-          onClick={() => router.push("/rotas/dashboard")}
-          type="submit" className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+          <button type="submit" className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
             Login
           </button>
         </form>
-      <Link 
-        href="/rotas/dashboard"
-        className="text-blue-700 hover:underline md-4 block text-center">
-          Ir para Cadastro
-      </Link>
       </div>
     </div>
   );

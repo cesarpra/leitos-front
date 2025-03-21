@@ -1,33 +1,22 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle, Clock, MapPin, Type, Search, ArrowUp, X } from "react-feather";
 import Card from "./Card";
 
 const Dashboard = () => {
   const router = useRouter();
-  const patients = [
-    {
-      name: "Francisco Cláudio Pereira Lima",
-      hospital: "UPA 24h - Unidade Ásia",
-      doctor: "Carlos Vasconcelos",
-      time: 22,
-      logo: "/logo.png",
-      status: "checked",
-    },
-    {
-      name: "Alberto Ferreira de Assis",
-      hospital: "Hospital Geral de Fortaleza",
-      doctor: "Cesar Jordinha",
-      time: 60,
-      logo: "/logo.png",
-      status: "clock",
-    },
-  ];
-
+  const [patients, setPatients] = useState([]);
   const [sortOption, setSortOption] = useState("name");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedHospital, setSelectedHospital] = useState("");
+
+  useEffect(() => {
+    const storedPatients = localStorage.getItem("patients");
+    if (storedPatients) {
+      setPatients(JSON.parse(storedPatients));
+    }
+  }, []);
 
   const sortPatients = (option) => {
     setSortOption(option);
@@ -47,15 +36,15 @@ const Dashboard = () => {
 
   return (
     <div className="h-[907px] p-6 bg-gray-100">
-      <div className="w-[1223px] rounded-[15px] bg-white px-4 py-4">
+      <div className="w-[1223px] h-[87px] rounded-[15px] bg-white px-4 pb-4">
         {/* Ordenar */}
-        <span className="text-gray-700 font-bold text-xs block mb-2">Ordenar por:</span>
+        <span className="text-gray-700 font-bold text-xs block mb-0 mt-2 pt-2">Ordenar por:</span>
         
         <div className="flex items-center gap-4">
           {/* Ícones */}
           <div className="flex gap-5 items-center">
             {["name", "time", "hospital", "checked"].map((option, index) => (
-              <button key={index} onClick={() => sortPatients(option)} className="relative">
+              <button key={index} onClick={() => sortPatients(option)} className="relative pt-1">
                 {option === "name" && <CheckCircle className={`cursor-pointer ${sortOption === option ? "text-blue-500" : "text-gray-500"}`} />}
                 {option === "time" && <Clock className={`cursor-pointer ${sortOption === option ? "text-blue-500" : "text-gray-500"}`} />}
                 {option === "hospital" && <MapPin className={`cursor-pointer ${sortOption === option ? "text-blue-500" : "text-gray-500"}`} />}
