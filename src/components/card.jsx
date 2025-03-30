@@ -1,14 +1,28 @@
 "use client"
 import { CheckCircle, ArrowRight } from "react-feather";
 import Link from "next/link";
+import { useState, useEffect } from "react";
   
-  const Card = ({ name, hospital, doctor, time, logo }) => {
+  const Card = ({ doctor, time }) => {
+
+    const [patient, setPatient] = useState(null);
+
+  useEffect(() => {
+    const storedPatient = localStorage.getItem("patients");
+    if (storedPatient) {
+      setPatient(JSON.parse(storedPatient));
+    }
+  }, []);
+
+  if (!patient) {
+    return <p className="text-center mt-10">Carregando informações do paciente...</p>;
+  }
       return (
         <div className="w-[359px] h-[209px] bg-white shadow-md rounded-lg p-1 relative">
          <div className="flex justify-between items-start">
           <div className="flex flex-col">
-            <h3 className="font-extralight my-4 ml-2">{name}</h3>
-            <p className="text-xs text-gray-500 mb-4 ml-2">{hospital}</p>
+            <h3 className="font-extralight my-4 ml-2">{patient.name}</h3>
+            <p className="text-xs text-gray-500 mb-4 ml-2">{patient.hospital}</p>
             <p className="text-xs text-gray-700 mb-1 ml-2">Dr(a): {doctor}</p>
           </div>
             <img src="/logo-hgf.jpg" alt="Logo-hgf.jpg" className="w-[65px] h-[65px] p-0 m-0"/>

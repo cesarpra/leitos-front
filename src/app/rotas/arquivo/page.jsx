@@ -1,7 +1,7 @@
 import Sidebar from "../../../components/Sidebar";
 import Header from "../../../components/Header";
 import { Inter } from "next/font/google";
-import Dashboard from "@/components/Dashboard";
+import Dashboard from "../../../components/Dashboard";
 
 const niramit = Inter({ subsets: ["latin"], weight: "400" });
 

@@ -1,28 +1,49 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "../../../components/Sidebar";
 import Header from "../../../components/Header";
 import withPrivateRoute from "../../../components/withPrivateRoute";
-import { MapPin, ArrowUp, Type, UserPlus } from "react-feather";
+import { MapPin, Type, UserPlus } from "react-feather";
 import api from "../../services/api";
 
 function Usuarios() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [instituicoes, setInstituicoes] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
   const [pesquisa, setPesquisa] = useState("");
-  const [instituicaoSelecionada, setInstituicaoSelecionada] = useState("");
-  const [novaInstituicao, setNovaInstituicao] = useState({ nome: "", cidade: "", bairro: "", telefone: "" });
   const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const router = useRouter();
 
   useEffect(() => {
-    const storedInstituicoes = JSON.parse(localStorage.getItem("instituicoes")) || [];
-    setInstituicoes(storedInstituicoes);
-  }, []);
-
+    const fetchUsuarios = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) throw new Error("Usuário não autenticado!");
+  
+        const response = await api.get("/listar-usuarios", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        console.log("Resposta da API:", response.data); 
+  
+        if (Array.isArray(response.data.users)) {
+          setUsuarios(response.data.users);
+        } else {
+          console.error("Resposta inesperada da API:", response.data);
+          setUsuarios([]);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar usuários:", error.response ? error.response.data : error.message);
+        setUsuarios([]);
+      }
+    };
+  
+    fetchUsuarios();
+  }, []);  
+  
+  
   const handleSave = async (e) => {
     e.preventDefault();
     try {
@@ -33,6 +54,9 @@ function Usuarios() {
       });
       alert("Usuário cadastrado com sucesso!");
       setModalOpen(false);
+
+      const response = await api.get("/listar-usuarios");
+      setUsuarios(response.data);
     } catch (err) {
       alert("Erro ao cadastrar usuário");
     }
@@ -43,6 +67,7 @@ function Usuarios() {
       <Sidebar />
       <div className="flex flex-col flex-1">
         <Header title={<span className="text-[17px] font-normal">Usuários</span>} />
+        
         <div className="flex justify-center mt-6">
           <div className="flex items-center h-[87px] max-w-[1223px] w-full rounded-[15px] bg-white px-4 py-4">
             <div className="flex flex-col items-start mr-4">
@@ -57,7 +82,6 @@ function Usuarios() {
               </div>
             </div>
             <div className="flex-grow flex justify-end gap-4">
-              <input type="text" className="border border-gray-300 rounded-2xl text-sm p-2 pr-10 w-full h-[51px] text-gray-700" placeholder="Filtrar por hospital" value={instituicaoSelecionada} readOnly />
               <input type="text" className="border border-gray-300 rounded-2xl text-sm p-2 pr-10 w-full h-[51px]" placeholder="Pesquisar por nome" value={pesquisa} onChange={e => setPesquisa(e.target.value)} />
             </div>
             <button className="bg-[#2e76cb] h-[51px] text-white px-4 py-2 rounded flex items-center ml-4" onClick={() => setModalOpen(true)}>
@@ -65,6 +89,41 @@ function Usuarios() {
             </button>
           </div>
         </div>
+
+    {/* Lista de Usuários */}
+
+  <div className="max-w-[1223px] w-full bg-[#f3f4f6] p-4 mx-auto">
+    <h2 className="text-lg font-semibold mb-4"></h2>
+    
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {(usuarios || [])
+        .filter(user => user?.name?.toLowerCase().includes(pesquisa.toLowerCase()))
+        .map(user => {
+
+          const initials = user.name
+            .split(" ") 
+            .map(word => word[0])
+            .join("")
+
+          return (
+            <div key={user.id} className="w-[359px] h-[154px] bg-white shadow-md rounded-lg p-1 relative">
+              <div className="flex justify-between items-start">
+                <div className="flex flex-col">
+                  <h3 className="font-extralight my-4 ml-2">{user.name}</h3>
+                  <p className="text-xs text-gray-500 mb-4 ml-2">{user.email}</p>
+                </div>
+
+                <div className="w-[65px] h-[65px] flex items-center justify-center bg-[#2e76cb] text-black font-bold text-lg rounded-full">
+                  {initials}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+    </div>
+  </div>
+
+        {/* Modal de Cadastro */}
         {modalOpen && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-md w-80 relative">
@@ -79,9 +138,10 @@ function Usuarios() {
             </div>
           </div>
         )}
+
       </div>
     </div>
   );
 }
 
-export default Usuarios;
+export default withPrivateRoute(Usuarios);

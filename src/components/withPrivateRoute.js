@@ -12,15 +12,15 @@ const withPrivateRoute = (Component) => {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        // redireciona para login
         router.replace("/rotas/login");
+
       } else {
         setIsLoading(false);
       }
     }, [router]);
 
     if (isLoading) {
-      // Loading
+      
       return <div>Carregando...</div>;
     }
 

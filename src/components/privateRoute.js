@@ -10,7 +10,6 @@ const privateRoute = ({ children }) => {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      // redireciona para a página de login
       router.push("/rotas/login");
     }
   }, [router]);
